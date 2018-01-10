@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import * as topojson from 'topojson-client';
 import * as d3 from 'd3';
 
-import mapJson from './japan_topo.json';
+// geo2topo output
+import mapJson from './japan_geo2topo.json';
 
 class Map extends Component {
 
@@ -29,7 +30,7 @@ class Map extends Component {
         .projection(projection);
 
     const jpn = mapJson;
-    const geoJp = topojson.feature(jpn, jpn.objects.ne_pref_japan_geo);
+    const geoJp = topojson.feature(jpn, jpn.objects['-']);
     console.log(geoJp);
     const svg = d3.select(this.node);
     svg.attr('height', h)
@@ -38,6 +39,7 @@ class Map extends Component {
       .data(geoJp.features)
       .enter()
       .append("path")
+      .attr("class", d => d.properties.region ? `region ${d.properties.region.toLowerCase()}` : 'region')
       .attr("d", path);
   }
 

@@ -3,3 +3,45 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.region {
+  fill: #fff;
+  stroke: #aaa;
+}
+
+.hokkaido {
+  fill: #0000ff;
+}
+
+.chubu {
+  fill: #ff0000;
+}
+
+.chugoku {
+  fill: #00ff00;
+}
+
+.kanto {
+  fill: #00ffff;
+}
+
+.kinki {
+  fill: #FFD700;
+}
+
+.kyushu {
+  fill: #4169E1;
+}
+
+.okinawa {
+  fill: #FFC0CB;
+}
+
+.shikoku {
+  fill: #FFA07A;
+}
+
+.tohoku {
+  fill: #FF4500;
+}
+
