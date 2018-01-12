@@ -4,44 +4,21 @@ body {
   font-family: sans-serif;
 }
 
-.region {
-  fill: #fff;
-  stroke: #aaa;
+.unexplored {
+  fill: #f5f5f5;
 }
-
-.hokkaido {
-  fill: #0000ff;
-}
-
-.chubu {
-  fill: #ff0000;
-}
-
-.chugoku {
-  fill: #00ff00;
-}
-
-.kanto {
+.passage {
   fill: #00ffff;
 }
-
-.kinki {
-  fill: #FFD700;
+.earthing {
+  fill: #00ff00;
 }
-
-.kyushu {
-  fill: #4169E1;
+.visit {
+  fill: #ffff00;
 }
-
-.okinawa {
-  fill: #FFC0CB;
+.stay {
+  fill: #ff0000;
 }
-
-.shikoku {
-  fill: #FFA07A;
+.live {
+  fill: #ff00ff;
 }
-
-.tohoku {
-  fill: #FF4500;
-}
-
