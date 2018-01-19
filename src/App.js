@@ -6,6 +6,7 @@ import AutoComplete from 'material-ui/AutoComplete';
 import Immutable from 'immutable';
 import EventListener from 'react-event-listener';
 import { Card, CardHeader, CardText } from 'material-ui/Card';
+import iconv from 'iconv-urlencode';
 
 import KeikenMap from './KeikenMap';
 import KeikenDetail from './KeikenDetail';
@@ -15,6 +16,8 @@ import { EXPERIENCES, TITLES } from './constants';
 
 // geo2topo output
 import japanKeikenMap from './japan_geo2topo.json';
+
+const CHARCODE = 'CP932';
 
 class App extends Component {
 
@@ -47,7 +50,7 @@ class App extends Component {
     const param = window.location.search.substr(1).split('&')
       .map(kv => kv.split('=', 2))
       .filter(kvArr => kvArr.length === 2 && pat.test(kvArr[0]))
-      .reduce((acc, cur) => (acc[cur[0]] = decodeURI(cur[1]), acc), {}); // eslint-disable-line no-sequences
+      .reduce((acc, cur) => (acc[cur[0]] = iconv.decode(cur[1], CHARCODE), acc), {}); // eslint-disable-line no-sequences
     return this._createState(param.MAP || '', param.NAM || '', param.CAT || '');
   }
 
@@ -56,7 +59,7 @@ class App extends Component {
       MAP: data.get('prefNames').map(name => data.get('prefData').get(name).get('experience') + '').join(''),
       NAM: data.get('name'),
       CAT: data.get('title'),
-    }).map((v, k) => `${k}=${encodeURI(v)}`).join('&');
+    }).map((v, k) => `${k}=${iconv.encode(v, CHARCODE)}`).join('&');
   }
 
   _createState(prefStateStr = '', name = '', title = '') {
