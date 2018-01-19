@@ -3,22 +3,3 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
-
-.unexplored {
-  fill: #f5f5f5;
-}
-.passage {
-  fill: #00ffff;
-}
-.earthing {
-  fill: #00ff00;
-}
-.visit {
-  fill: #ffff00;
-}
-.stay {
-  fill: #ff0000;
-}
-.live {
-  fill: #ff00ff;
-}

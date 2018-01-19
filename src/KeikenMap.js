@@ -7,24 +7,31 @@ import * as d3 from 'd3';
 import mapJson from './japan_geo2topo.json';
 import { EXPERIENCES } from './constants';
 
-class Map extends Component {
+class KeikenMap extends Component {
 
   static propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     scale: PropTypes.number.isRequired,
-    mapState: PropTypes.object.isRequired,
-  }; 
+    prefData: PropTypes.object.isRequired,
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.width !== nextProps.width
+      || this.props.height !== nextProps.height
+      || this.props.scale !== nextProps.scale
+      || !this.props.prefData.equals(nextProps.prefData);
+  }
+
   componentDidMount() {
-    this.drawMap()
+    this.drawKeikenMap()
   }
 
   componentDidUpdate() {
-    this.drawMap()
+    this.drawKeikenMap()
   }
 
-  drawMap() {
-
+  drawKeikenMap() {
     const w = this.props.width;
     const h = this.props.height;
 
@@ -42,32 +49,35 @@ class Map extends Component {
     // GeoJSONからpath要素を作る．
     var path = d3.geoPath().projection(projection);
 
-    console.log(geoJp);
     const svg = d3.select(this.node);
+    // clear
+    svg.selectAll('rect').remove();
+    svg.selectAll('path').remove();
+    // draw
     svg.append('rect') // うーみ
       .attr('x', 0)
       .attr('y', 0)
       .attr('width', w)
       .attr('height', h)
       .attr('style', 'fill: #3987c9;');
-    svg.attr('height', h)
+    svg.attr('height', h) // にっぽん
       .attr('width', w)
       .selectAll("path")
       .data(geoJp.features)
       .enter()
       .append("path")
-        .attr("class", d => this._name2Class(d.properties.name))
+        .attr("style", d => this._name2Style(d.properties.name))
         .attr("d", path);
   }
 
-  _name2Class(name) {
-    console.log(this.props.mapState.prefData[name].experience);
-    return EXPERIENCES[this.props.mapState.prefData[name].experience].name;
+  _name2Style(name) {
+    return `fill: ${EXPERIENCES[this.props.prefData.get(name).get('experience')].color};`;
   }
 
   render() {
+    console.log('#### KeikenMap render ####')
     return <svg ref={node => this.node = node} />
   }
 }
 
-export default Map;
+export default KeikenMap;
