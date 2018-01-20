@@ -16,6 +16,21 @@ class KeikenMap extends Component {
     prefData: PropTypes.object.isRequired,
   };
 
+  constructor() {
+    super();
+    this.state = { };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const diffPrefs = [ ...nextProps.prefData
+      .filter((v, name) => this.props.prefData.get(name).get('experience') !== v.get('experience'))
+      .keys() ];
+    if (diffPrefs.length > 0) {
+      this.setState({ updated: diffPrefs });
+    }
+
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     return this.props.width !== nextProps.width
       || this.props.height !== nextProps.height
@@ -28,7 +43,17 @@ class KeikenMap extends Component {
   }
 
   componentDidUpdate() {
-    this.drawKeikenMap()
+    this.updateKeienMap()
+  }
+
+  updateKeienMap() {
+    if (this.state.updated === undefined || this.state.updated.length <= 0) return;
+
+    // update
+    const svg = d3.select(this.node);
+    this.state.updated.forEach((name) => {
+      svg.select(`#${name}`).attr("style", d => this._name2Style(name))
+    });
   }
 
   drawKeikenMap() {
@@ -66,6 +91,7 @@ class KeikenMap extends Component {
       .data(geoJp.features)
       .enter()
       .append("path")
+        .attr("id", d => d.properties.name)
         .attr("style", d => this._name2Style(d.properties.name))
         .attr("d", path);
   }
