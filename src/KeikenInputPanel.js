@@ -34,6 +34,36 @@ const rbstyle = {
   marginRight: 5,
 };
 
+class KeikenInputOnePanel extends Component {
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    pref: PropTypes.object.isRequired, // Immutable Map
+    onSelect: PropTypes.func.isRequired,
+  };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !this.props.pref.equals(nextProps.pref)
+      // || this.props.onSelect !== nextProps.onSelect
+      || this.props.name !== nextProps.name;
+  }
+
+  render() {
+    const { name, pref } = this.props;
+    return (
+      <Paper key={name} style={{ ...pstyle }} zDepth={1}>
+        <div style={{ ...dstyle }} ><span style={{ whiteSpace: "nowrap" }}>{pref.get('local')}</span></div>
+        <RadioButtonGroup name={name} style={{ ...rbxstyle }} defaultSelected={pref.get('experience')}
+            onChange={(e, v) => this.props.onSelect(name, v)}>
+          { EXPERIENCES_REVERSE.map((e, idx) =>
+            <RadioButton style={{ ...rbstyle }} key={e.name} value={EXPERIENCES_REVERSE.length - idx - 1}
+              checkedIcon={ <FontIcon style={{ ...checkedIconStyles, }}>{ e.mark }</FontIcon> }
+              uncheckedIcon={ <FontIcon style={{ ...uncheckedIconStyles }}>{ e.mark }</FontIcon> } /> ) }
+        </RadioButtonGroup>
+      </Paper>
+    );
+  }
+}
+
 class KeikenInputPanel extends Component {
 
   static propTypes = {
@@ -44,23 +74,13 @@ class KeikenInputPanel extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return !this.props.prefNames.equals(nextProps.prefNames)
+      // || this.props.onSelect !== nextProps.onSelect
       || !this.props.prefData.equals(nextProps.prefData);
   }
 
   _createPref(name) {
     const pref = this.props.prefData.get(name);
-    return (
-      <Paper key={name} style={{ ...pstyle }} zDepth={1}>
-        <div style={{ ...dstyle }} ><span style={{ whiteSpace: "nowrap" }}>{ pref.get('local') }</span></div>
-        <RadioButtonGroup name={name} style={{ ...rbxstyle }} defaultSelected={pref.get('experience')}
-            onChange={(e, v) => this.props.onSelect(name, v)}>
-          { EXPERIENCES_REVERSE.map((e, idx) =>
-            <RadioButton style={{ ...rbstyle }} key={e.name} value={EXPERIENCES_REVERSE.length - idx - 1}
-              checkedIcon={ <FontIcon style={{ ...checkedIconStyles, }}>{ e.mark }</FontIcon> }
-              uncheckedIcon={ <FontIcon style={{ ...uncheckedIconStyles }}>{ e.mark }</FontIcon> } /> ) }
-        </RadioButtonGroup>
-      </Paper>
-    );
+    return <KeikenInputOnePanel name={name} pref={pref} onSelect={this.props.onSelect} />
   }
 
   _createPrefs() {

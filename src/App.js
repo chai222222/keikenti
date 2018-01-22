@@ -9,7 +9,7 @@ import { Card, CardHeader, CardText } from 'material-ui/Card';
 import iconv from 'iconv-urlencode';
 
 import KeikenMap from './KeikenMap';
-import KeikenDetail from './KeikenDetail';
+import KeikenDetailPanel from './KeikenDetailPanel';
 import KeikenInputPanel from './KeikenInputPanel';
 
 import { EXPERIENCES, TITLES } from './constants';
@@ -137,7 +137,7 @@ class App extends Component {
           <Card expanded={this.state.detailExpanded} onExpandChange={ (detailExpanded) => { console.log(detailExpanded); this.setState({ detailExpanded }); } }>
             <CardHeader title="詳細" showExpandableButton={true} actAsExpander={true} />
             <CardText expandable={true}>
-              <KeikenDetail prefNames={prefNames} prefData={prefData} />
+              <KeikenDetailPanel prefNames={prefNames} prefData={prefData} />
             </CardText>
           </Card>
           <Card expanded={this.state.inputExpanded} onExpandChange={ (inputExpanded) => { console.log(inputExpanded); this.setState({ inputExpanded }); } }>
