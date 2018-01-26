@@ -50,7 +50,7 @@ class KeikenDetailPanel extends Component {
 
   _createCard(exp, experience) {
     const prefs = this.props.prefNames.filter(name => this.props.prefData.get(name).get('experience') === experience);
-    return <KeikenDetailOnePanel prefs={prefs} prefData={this.props.prefData} exp={exp} experience={experience} />;
+    return <KeikenDetailOnePanel key={exp.name} prefs={prefs} prefData={this.props.prefData} exp={exp} experience={experience} />;
   }
 
   _createCards() {

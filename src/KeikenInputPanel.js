@@ -80,7 +80,7 @@ class KeikenInputPanel extends Component {
 
   _createPref(name) {
     const pref = this.props.prefData.get(name);
-    return <KeikenInputOnePanel name={name} pref={pref} onSelect={this.props.onSelect} />
+    return <KeikenInputOnePanel key={name} name={name} pref={pref} onSelect={this.props.onSelect} />
   }
 
   _createPrefs() {

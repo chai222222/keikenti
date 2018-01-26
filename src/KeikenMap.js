@@ -25,10 +25,7 @@ class KeikenMap extends Component {
     const diffPrefs = [ ...nextProps.prefData
       .filter((v, name) => this.props.prefData.get(name).get('experience') !== v.get('experience'))
       .keys() ];
-    if (diffPrefs.length > 0) {
-      this.setState({ updated: diffPrefs });
-    }
-
+    this.setState({ updated: diffPrefs });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -39,24 +36,28 @@ class KeikenMap extends Component {
   }
 
   componentDidMount() {
-    this.drawKeikenMap()
+    this._drawKeikenMap()
   }
 
   componentDidUpdate() {
-    this.updateKeienMap()
+    this._updateKeikenMap()
   }
 
-  updateKeienMap() {
-    if (this.state.updated === undefined || this.state.updated.length <= 0) return;
+  _updateKeikenMap() {
+    if (this.state.updated === undefined) return;
 
     // update
-    const svg = d3.select(this.node);
-    this.state.updated.forEach((name) => {
-      svg.select(`#${name}`).attr("style", d => this._name2Style(name))
-    });
+    if (this.state.updated.length) { // 経験値の修正
+      const svg = d3.select(this.node);
+      this.state.updated.forEach((name) => {
+        svg.select(`#${name}`).attr("style", d => this._name2Style(name))
+      });
+    } else { // windows size修正
+      this._drawKeikenMap();
+    }
   }
 
-  drawKeikenMap() {
+  _drawKeikenMap() {
     const w = this.props.width;
     const h = this.props.height;
 
